@@ -1,8 +1,10 @@
 # Pocket AI downloads
 
-Download offline maps from [Offline maps: Southeast U.S.](https://github.com/ethennorton01/pocket-ai-updates/releases/tag/offline-maps-2026-11-08). The release includes Florida North, Florida South, Georgia, Alabama, and South Carolina, along with usage instructions and map credits.
+Download offline maps for all 50 states from the [United States map collection](https://github.com/ethennorton01/pocket-ai-updates/releases/tag/offline-maps-2026-11-10-batch-1), or use the [state selector on Pocket AI](https://pocketaiusa.com/maps/). Larger states are divided into overlapping regions.
 
-Pocket AI updates and their release notes will also appear in [Releases](https://github.com/ethennorton01/pocket-ai-updates/releases).
+Download the `.pmtiles` file while online, then open Pocket AI, select **Maps**, choose **Open a map file**, and select your download. Map credits, coverage details, and checksums are included with the release.
+
+Pocket AI updates and release notes will also appear in [Releases](https://github.com/ethennorton01/pocket-ai-updates/releases).
 
 For product information and support, visit [Pocket AI](https://pocketaiusa.com/).
 
