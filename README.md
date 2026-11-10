@@ -1,6 +1,6 @@
 # Pocket AI updates
 
-This repository is the release channel for Pocket AI updates. Published update packages and their release notes will appear in [Releases](../../releases).
+This repository is the release channel for Pocket AI updates. Published update packages and their release notes will appear in [Releases](https://github.com/ethennorton01/pocket-ai-updates/releases).
 
 For product information and support, visit [Pocket AI](https://pocketaiusa.com/).
 
