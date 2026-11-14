@@ -1,6 +1,6 @@
 # Pocket AI USB updates
 
-Use the releases in this repository to download Pocket AI files for your USB. Each release lists what it includes and how to use the files.
+Download files from the [Pocket AI releases page](https://github.com/ethennorton01/pocket-ai-updates/releases). Each release lists what it includes and how to use its files. Review the release notes before choosing a download.
 
 ## Choose the right Pocket AI update
 
