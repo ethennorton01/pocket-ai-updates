@@ -8,8 +8,3 @@ Download a `.pmtiles` map file and its matching SHA-256 checksum while online. S
 
 Map packages add offline map data only; they do not change or update the Pocket AI app. Map credits and coverage details are included with each release. Map data: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), available under the [Open Database License](https://opendatacommons.org/licenses/odbl/), and [Natural Earth](https://www.naturalearthdata.com/). Basemaps are produced by [Protomaps](https://docs.protomaps.com/basemaps/downloads).
 
-## Pocket AI app updates
-
-When an app update is ready, it will be listed at [Pocket AI Updates](https://pocketaiusa.com/updates/) with its download, supported app build, checksum, and USB installation steps. Until then, continue using the app files already on your USB.
-
-Customer chats, personal files, licenses, and device data do not belong in this repository.
