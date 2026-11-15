@@ -1,0 +1,22 @@
+name: Repository Baseline Gate
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: repository-baseline-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check whitespace errors
+        run: git diff --check "${{ github.event.pull_request.base.sha || 'HEAD^' }}" "${{ github.sha }}"
+      - name: Verify release repository documentation
+        run: test -s README.md
