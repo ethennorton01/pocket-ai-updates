@@ -1,0 +1,65 @@
+name: Repository Security Scan
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+concurrency:
+  group: repository-security-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+permissions:
+  contents: read
+jobs:
+  dependency-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        if: hashFiles('package-lock.json') != ''
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Audit production dependencies
+        if: hashFiles('package-lock.json') != ''
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm audit --omit=dev --audit-level=high
+      - name: Report dependency audit scope
+        if: hashFiles('package-lock.json') == ''
+        run: echo 'No npm lockfile; dependency audit is not applicable.'
+  history-secret-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Scan available Git history with pinned Gitleaks
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          work="$(mktemp -d "$RUNNER_TEMP/repository-history-scan.XXXXXX")"
+          trap 'rm -rf "$work"' EXIT
+          curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --retry 2 --max-time 120 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$work/scanner.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $work/scanner.tar.gz" | sha256sum --check --status
+          tar -xzf "$work/scanner.tar.gz" -C "$work" gitleaks
+          printf '[extend]\nuseDefault = true\n' > "$work/config.toml"
+          : > "$work/ignore"
+          if "$work/gitleaks" git . --log-opts='--all --full-history' \
+            --config="$work/config.toml" --gitleaks-ignore-path="$work/ignore" \
+            --ignore-gitleaks-allow --redact=100 --no-banner --exit-code=1 \
+            > "$work/scan.log" 2>&1; then
+            echo 'History secret scan passed for fetched refs using pinned Gitleaks.'
+          else
+            echo '::error::History secret scan did not pass. Review findings privately; raw logs are not published.'
+            exit 1
+          fi
